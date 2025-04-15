@@ -1,0 +1,43 @@
+{
+    "resultCount": 1,
+    "results": [
+        {
+            "wrapperType": "track",
+            "kind": "podcast",
+            "collectionId": 979020229,
+            "trackId": 979020229,
+            "artistName": "Michael Kennedy",
+            "collectionName": "Talk Python To Me",
+            "trackName": "Talk Python To Me",
+            "collectionCensoredName": "Talk Python To Me",
+            "trackCensoredName": "Talk Python To Me",
+            "collectionViewUrl": "https://podcasts.apple.com/us/podcast/talk-python-to-me/id979020229?uo=4",
+            "feedUrl": "https://talkpython.fm/episodes/rss",
+            "trackViewUrl": "https://podcasts.apple.com/us/podcast/talk-python-to-me/id979020229?uo=4",
+            "artworkUrl30": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/30x30bb.jpg",
+            "artworkUrl60": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/60x60bb.jpg",
+            "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/100x100bb.jpg",
+            "collectionPrice": 0.00,
+            "trackPrice": 0.00,
+            "collectionHdPrice": 0,
+            "releaseDate": "2025-04-14T08:00:00Z",
+            "collectionExplicitness": "notExplicit",
+            "trackExplicitness": "cleaned",
+            "trackCount": 500,
+            "trackTimeMillis": 3635,
+            "country": "USA",
+            "currency": "USD",
+            "primaryGenreName": "Technology",
+            "contentAdvisoryRating": "Clean",
+            "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/600x600bb.jpg",
+            "genreIds": [
+                "1318",
+                "26"
+            ],
+            "genres": [
+                "Technology",
+                "Podcasts"
+            ]
+        }
+    ]
+}
