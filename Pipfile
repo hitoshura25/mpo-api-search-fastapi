@@ -6,8 +6,12 @@ name = "pypi"
 [packages]
 fastapi = ">=0.68.0"
 uvicorn = ">=0.15.0"
-httpx = ">=0.24.0"
 pydantic = ">=2.0.0"
+httpx = "*"
+pytest = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-httpx = "*"
 
 [dev-packages]
 

@@ -4,6 +4,13 @@ Also contains instructions for local deployment using Docker, Kubernetes, and ki
 
 ***Disclaimer***: Used various AI tools to learn how to set this up from within VS Code (Amazon Q, Gemini 2.0 Flash, GPT-4o, Claude 3.5 Sonnet) 
 
+## Run locally
+```
+pipenv install -r dev-requirements.txt
+pipenv shell
+python run.py
+```
+
 ## Building docker image
 ### Install Docker
 https://www.docker.com/get-started/
