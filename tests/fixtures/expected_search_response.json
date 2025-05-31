@@ -11,6 +11,17 @@
         ],
         "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/600x600bb.jpg",
         "smallArtworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/100x100bb.jpg"
+      },
+      {
+        "name": "Test Podcast",
+        "author": "Test Author",
+        "feedUrl": "https://test.fm/episodes/rss",
+        "genres": [
+          "Technology",
+          "Podcasts"
+        ],
+        "artworkUrl": "https://test.com/100x100bb.jpg",
+        "smallArtworkUrl": "https://test.com/100x100bb.jpg"
       }
     ]
 }

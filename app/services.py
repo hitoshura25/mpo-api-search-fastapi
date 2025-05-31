@@ -3,11 +3,11 @@ from typing import Dict, Any, List
 
 def transform_podcast(podcast: Dict[str, Any]) -> Dict[str, Any]:
     field_mapping = {
-        'name': ['trackName', 'collectionName'],
+        'name': ['trackName'],
         'artworkUrl': ['artworkUrl600', 'artworkUrl100'],
-        'smallArtworkUrl': ['artworkUrl100', 'artworkUrl30'], 
+        'smallArtworkUrl': ['artworkUrl100'], 
         'genres': ['genres'],
-        'author': ['artistName', 'author'],
+        'author': ['artistName'],
         'feedUrl': ['feedUrl']
     }
     
