@@ -38,6 +38,28 @@
                 "Technology",
                 "Podcasts"
             ]
+        },
+        {
+            "collectionId": 979020230,
+            "trackId": 979020230,
+            "artistName": "Test Author",
+            "collectionName": "Test Podcast",
+            "trackName": "Test Podcast",
+            "collectionCensoredName": "Test Podcast",
+            "trackCensoredName": "Test Podcast",
+            "collectionViewUrl": "https://podcasts.apple.com/us/podcast/test-podcast/id979020230?uo=4",
+            "feedUrl": "https://test.fm/episodes/rss",
+            "trackViewUrl": "https://podcasts.apple.com/us/podcast/test-podcast/id979020230?uo=4",
+            "artworkUrl30": "https://test.com/30x30bb.jpg",
+            "artworkUrl60": "https://test.com/60x60bb.jpg",
+            "artworkUrl100": "https://test.com/100x100bb.jpg",
+            "collectionPrice": 0.00,
+            "trackPrice": 0.00,
+            "primaryGenreName": "Technology",
+            "genres": [
+                "Technology",
+                "Podcasts"
+            ]
         }
     ]
 }

@@ -2,14 +2,26 @@
     "resultCount": 1,
     "results": [
       {
-        "trackId": 979020229,
-        "trackName": "Talk Python To Me",
-        "artistName": "Michael Kennedy",
-        "description": null,
-        "primaryGenreName": "Technology",
-        "releaseDate": "2025-04-14T08:00:00Z",
+        "name": "Talk Python To Me",
+        "author": "Michael Kennedy",
         "feedUrl": "https://talkpython.fm/episodes/rss",
-        "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/600x600bb.jpg"
+        "genres": [
+          "Technology",
+          "Podcasts"
+        ],
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/600x600bb.jpg",
+        "smallArtworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6c/5d/00/6c5d001b-99f2-1312-ef93-d0791d6aca54/mza_17000424926567884148.jpg/100x100bb.jpg"
+      },
+      {
+        "name": "Test Podcast",
+        "author": "Test Author",
+        "feedUrl": "https://test.fm/episodes/rss",
+        "genres": [
+          "Technology",
+          "Podcasts"
+        ],
+        "artworkUrl": "https://test.com/100x100bb.jpg",
+        "smallArtworkUrl": "https://test.com/100x100bb.jpg"
       }
     ]
 }
