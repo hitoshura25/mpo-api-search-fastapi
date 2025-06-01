@@ -1,5 +1,5 @@
 # mpo-api-search-fastapi
-![Coverage](https://github.com/${{ github.repository }}/blob/main/coverage.svg)
+![Coverage](./coverage.svg)
 
 MPO API Webservice focused on search functionality, using FastAPI and Python.
 Also contains instructions for local deployment using Docker, Kubernetes, and kind (Kubernetes in Docker)
