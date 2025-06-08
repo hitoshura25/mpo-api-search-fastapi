@@ -62,13 +62,13 @@ async def search_podcasts(term: str) -> Dict[str, Any]:
             "results": [transform_podcast(podcast) for podcast in data["results"]]
         }
     
-async def get_podcast_episodes(feed_url: str, max_episodes: int = None) -> Dict[str, Any]:
+async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) -> Dict[str, Any]:
     feed = feedparser.parse(feed_url) 
+    total_episodes = len(feed.entries)
     image = feed.feed.get('image', {})
+    paginated_entries = feed.entries[offset:offset + limit]
     episodes = []
-    for entry in feed.entries:
-        if max_episodes and len(episodes) >= max_episodes:
-            break
+    for entry in paginated_entries:
 
         link = next((link for link in entry.get('links', []) if link.get('rel') == 'enclosure'), {})
         media_thumbnail = next(iter(entry.get('media_thumbnail', [])), {})
@@ -86,12 +86,19 @@ async def get_podcast_episodes(feed_url: str, max_episodes: int = None) -> Dict[
         )
         episodes.append(episode)
     
+    next_offset = offset + limit if offset + limit < total_episodes else None
+    prev_offset = offset - limit if offset > 0 else None
     return {
         "feed_url": feed_url,
         "episodes": episodes,
         "name": feed.feed.get('title', ''),
         "description": feed.feed.get('description', ''),
         "imageUrl": image.get('href', ''),
-        "episodesCount": len(episodes),
-        "totalEpisodes": len(feed.entries),
+        "pagination": {
+            "total": total_episodes,
+            "limit": limit,
+            "offset": offset,
+            "next_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={next_offset}" if next_offset else None,
+            "previous_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={prev_offset}" if prev_offset else None
+        }
     }

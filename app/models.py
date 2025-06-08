@@ -23,10 +23,16 @@ class Episode(BaseModel):
     type: Optional[str] = None
     artworkUrl: Optional[str] = None
 
+class PaginationMetadata(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    next_page: Optional[str] = None
+    previous_page: Optional[str] = None
+
 class EpisodeResponse(BaseModel):
     name: str
     description: Optional[str] = None
     imageUrl: Optional[str] = None
     episodes: List[Episode]
-    episodesCount: int
-    totalEpisodes: int
+    pagination: PaginationMetadata
