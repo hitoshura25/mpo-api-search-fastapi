@@ -1,5 +1,8 @@
 import httpx
+import feedparser
+from datetime import datetime
 from typing import Dict, Any, List
+from .models import Episode, EpisodeResponse
 
 def transform_podcast(podcast: Dict[str, Any]) -> Dict[str, Any]:
     field_mapping = {
@@ -37,3 +40,29 @@ async def search_podcasts(term: str) -> Dict[str, Any]:
             "resultCount": data["resultCount"],
             "results": [transform_podcast(podcast) for podcast in data["results"]]
         }
+    
+async def get_podcast_episodes(feed_url: str) -> Dict[str, Any]:
+    feed = feedparser.parse(feed_url)
+    
+    image = feed.feed.get('image', {})
+    episodes = []
+    for entry in feed.entries:
+        link = next(iter(entry.get('links', [])), {})
+        episode = Episode(
+            name=entry.get('title', ''),
+            description=entry.get('description', ''),
+            published=datetime.strptime(entry.get('published', ''), '%a, %d %b %Y %H:%M:%S %z'),
+            length=entry.get('itunes_duration', ''),
+            downloadUrl=link.get('href', ''),
+            type=link.get('type', ''),
+            artworkUrl=''
+        )
+        episodes.append(episode)
+    
+    return {
+        "feed_url": feed_url,
+        "episodes": episodes,
+        "name": feed.feed.get('title', ''),
+        "description": feed.feed.get('description', ''),
+        "imageUrl": image.get('href', ''),
+    }
