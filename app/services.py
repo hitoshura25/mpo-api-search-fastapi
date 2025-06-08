@@ -2,7 +2,7 @@ import httpx
 import feedparser
 from datetime import datetime
 from typing import Dict, Any, List
-from .models import Episode, EpisodeResponse
+from .models import Episode
 
 def transform_podcast(podcast: Dict[str, Any]) -> Dict[str, Any]:
     field_mapping = {
@@ -41,12 +41,14 @@ async def search_podcasts(term: str) -> Dict[str, Any]:
             "results": [transform_podcast(podcast) for podcast in data["results"]]
         }
     
-async def get_podcast_episodes(feed_url: str) -> Dict[str, Any]:
-    feed = feedparser.parse(feed_url)
-    
+async def get_podcast_episodes(feed_url: str, max_episodes: int = None) -> Dict[str, Any]:
+    feed = feedparser.parse(feed_url) 
     image = feed.feed.get('image', {})
     episodes = []
     for entry in feed.entries:
+        if max_episodes and len(episodes) >= max_episodes:
+            break
+
         link = next(iter(entry.get('links', [])), {})
         episode = Episode(
             name=entry.get('title', ''),
