@@ -18,7 +18,7 @@ class Episode(BaseModel):
     name: str
     description: Optional[str] = None
     published: Optional[datetime] = None
-    length: Optional[str] = None
+    durationInSeconds: Optional[str] = None
     downloadUrl: Optional[str] = None
     type: Optional[str] = None
     artworkUrl: Optional[str] = None
@@ -28,3 +28,5 @@ class EpisodeResponse(BaseModel):
     description: Optional[str] = None
     imageUrl: Optional[str] = None
     episodes: List[Episode]
+    episodesCount: int
+    totalEpisodes: int
