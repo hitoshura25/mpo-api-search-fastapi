@@ -69,7 +69,6 @@ async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) 
     paginated_entries = feed.entries[offset:offset + limit]
     episodes = []
     for entry in paginated_entries:
-
         link = next((link for link in entry.get('links', []) if link.get('rel') == 'enclosure'), {})
         media_thumbnail = next(iter(entry.get('media_thumbnail', [])), {})
         media_content = next(iter(entry.get('media_content', [])), {})
@@ -82,7 +81,7 @@ async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) 
             durationInSeconds=length,
             downloadUrl=link.get('href', ''),
             type=link.get('type', ''),
-            artworkUrl=media_thumbnail.get('url', entry_image.get('href', '')),
+            artworkUrl=media_thumbnail.get('url', entry_image.get('href', image.get('href', '') )),
         )
         episodes.append(episode)
     
@@ -98,7 +97,7 @@ async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) 
             "total": total_episodes,
             "limit": limit,
             "offset": offset,
-            "next_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={next_offset}" if next_offset else None,
-            "previous_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={prev_offset}" if prev_offset else None
+            "next_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={next_offset}" if next_offset != None else None,
+            "previous_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={prev_offset}" if prev_offset != None else None
         }
     }

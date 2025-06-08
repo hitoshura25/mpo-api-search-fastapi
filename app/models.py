@@ -1,8 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
-class Podcast(BaseModel):
+class BaseModelWithConfig(BaseModel):
+    model_config = ConfigDict()
+
+class Podcast(BaseModelWithConfig):
     name: Optional[str] = None
     artworkUrl: Optional[str] = None
     smallArtworkUrl: Optional[str] = None
@@ -10,11 +13,11 @@ class Podcast(BaseModel):
     author: Optional[str] = None
     feedUrl: Optional[str] = None
 
-class PodcastResponse(BaseModel):
+class PodcastResponse(BaseModelWithConfig):
     resultCount: int
     results: List[Podcast]
 
-class Episode(BaseModel):
+class Episode(BaseModelWithConfig):
     name: str
     description: Optional[str] = None
     published: Optional[datetime] = None
@@ -23,14 +26,14 @@ class Episode(BaseModel):
     type: Optional[str] = None
     artworkUrl: Optional[str] = None
 
-class PaginationMetadata(BaseModel):
+class PaginationMetadata(BaseModelWithConfig):
     total: int
     limit: int
     offset: int
     next_page: Optional[str] = None
     previous_page: Optional[str] = None
 
-class EpisodeResponse(BaseModel):
+class EpisodeResponse(BaseModelWithConfig):
     name: str
     description: Optional[str] = None
     imageUrl: Optional[str] = None
