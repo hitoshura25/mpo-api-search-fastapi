@@ -1,0 +1,35 @@
+# .github/actions/run-tests/action.yml
+name: 'Run Tests'
+description: 'Runs tests'
+inputs:
+  codecov_token:
+    description: 'Codecov token for uploading coverage reports'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r dev-requirements.txt
+
+    - name: Run Tests with Pytest
+      shell: bash
+      run: python runTests.py
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ inputs.codecov_token }}
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ inputs.codecov_token }}
