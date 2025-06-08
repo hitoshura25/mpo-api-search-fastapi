@@ -104,5 +104,12 @@ def test_podcast_details_with_no_offset_and_limit_more_than_total_success(monkey
     assert response.status_code == 200
     assert response.json() == load_json_fixture("expected_details_with_no_offset_and_limit_more_than_total.json")
 
-
+def test_podcast_details_error(monkeypatch):
+    def mock_parse(*args):
+        raise Exception("Feed parsing error")
+        
+    monkeypatch.setattr('feedparser.parse', mock_parse)
+    response = client.get("/details/?feed_url=https://example.com/feed.xml")
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Feed parsing error"}
 

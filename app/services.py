@@ -19,11 +19,7 @@ def parse_duration(duration_str: str) -> Optional[str]:
         elif len(parts) == 2:
             return str(parts[0] * 60 + parts[1])
             
-    # Handle seconds format
-    try:
-        return duration_str
-    except ValueError:
-        return None
+    return duration_str
 
 def transform_podcast(podcast: Dict[str, Any]) -> Dict[str, Any]:
     field_mapping = {
