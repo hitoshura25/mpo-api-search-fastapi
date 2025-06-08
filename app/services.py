@@ -1,8 +1,25 @@
 import httpx
 import feedparser
+from time import mktime
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .models import Episode
+
+
+def parse_duration(duration_str: str) -> Optional[str]:
+    if not duration_str:
+        return None
+        
+    # Handle HH:MM:SS format
+    if ':' in duration_str:
+        parts = duration_str.split(':')
+        parts = [int(p) for p in parts]
+        if len(parts) == 3:
+            return str(parts[0] * 3600 + parts[1] * 60 + parts[2])
+        elif len(parts) == 2:
+            return str(parts[0] * 60 + parts[1])
+            
+    return duration_str
 
 def transform_podcast(podcast: Dict[str, Any]) -> Dict[str, Any]:
     field_mapping = {
@@ -41,30 +58,42 @@ async def search_podcasts(term: str) -> Dict[str, Any]:
             "results": [transform_podcast(podcast) for podcast in data["results"]]
         }
     
-async def get_podcast_episodes(feed_url: str, max_episodes: int = None) -> Dict[str, Any]:
+async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) -> Dict[str, Any]:
     feed = feedparser.parse(feed_url) 
+    total_episodes = len(feed.entries)
     image = feed.feed.get('image', {})
+    paginated_entries = feed.entries[offset:offset + limit]
     episodes = []
-    for entry in feed.entries:
-        if max_episodes and len(episodes) >= max_episodes:
-            break
-
-        link = next(iter(entry.get('links', [])), {})
+    for entry in paginated_entries:
+        link = next((link for link in entry.get('links', []) if link.get('rel') == 'enclosure'), {})
+        media_thumbnail = next(iter(entry.get('media_thumbnail', [])), {})
+        media_content = next(iter(entry.get('media_content', [])), {})
+        entry_image = entry.get('image', {})
+        length = parse_duration(media_content.get('duration') or entry.get('itunes_duration') or link.get('length', ''))
         episode = Episode(
             name=entry.get('title', ''),
             description=entry.get('description', ''),
-            published=datetime.strptime(entry.get('published', ''), '%a, %d %b %Y %H:%M:%S %z'),
-            length=entry.get('itunes_duration', ''),
+            published=datetime.fromtimestamp(mktime(entry.get('published_parsed', ''))),
+            durationInSeconds=length,
             downloadUrl=link.get('href', ''),
             type=link.get('type', ''),
-            artworkUrl=''
+            artworkUrl=media_thumbnail.get('url', entry_image.get('href', image.get('href', '') )),
         )
         episodes.append(episode)
     
+    next_offset = offset + limit if offset + limit < total_episodes else None
+    prev_offset = offset - limit if offset > 0 else None
     return {
         "feed_url": feed_url,
         "episodes": episodes,
         "name": feed.feed.get('title', ''),
         "description": feed.feed.get('description', ''),
         "imageUrl": image.get('href', ''),
+        "pagination": {
+            "total": total_episodes,
+            "limit": limit,
+            "offset": offset,
+            "next_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={next_offset}" if next_offset != None else None,
+            "previous_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={prev_offset}" if prev_offset != None else None
+        }
     }

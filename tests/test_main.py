@@ -1,9 +1,8 @@
 import json
 from pathlib import Path
-import pytest
+import time
 from fastapi.testclient import TestClient
 from app.main import app
-from app.services import search_podcasts
 from unittest.mock import patch, MagicMock
 from pytest_httpx import HTTPXMock
 
@@ -16,19 +15,51 @@ def load_json_fixture(filename):
         return json.load(f)
 
 def create_mock_feed():
+    format_string = "%Y-%m-%d %H:%M:%S"
     mock_feed = MagicMock()
     mock_feed.feed = {
-        'title': 'Game Scoop!',
-        'description': 'Veteran games industry host Daemon Hatfield and the IGN crew break down the biggest gaming news of the week, dive into retro gaming nostalgia, and challenge each other—and the audience—with trivia that puts even hardcore gamers to the test.',
-        'image': {'href': 'https://megaphone.imgix.net/podcasts/6c7d19b0-729e-11ee-ab31-cb7b4e09a1f7/image/49bfd96ed9d8a8f3d7ee2a344fe303f0.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress'}
+        'title': 'Test Podcast',
+        'description': 'Test Description',
+        'image': {'href': 'https://example.com/default.jpg'}
     }
-    mock_feed.entries = [{
-        'title': 'Game Scoop! 813: The Witcher 3 & Cyberpunk Hit Important Milestones',
-        'description': 'Welcome back to IGN Game Scoop!, the ONLY video game podcast! This week your Omega Cops -- Daemon Hatfield, Sam Claiborn, and Justin Davis -- are discussing The Witcher 3, Cyberpunk 2, Black Panther, The Last of Us, and more.',
-        'published': 'Fri, 30 May 2025 20:24:00 -0000',
-        'itunes_duration': '4336',
-        'links': [{'href': 'https://www.podtrac.com/pts/redirect.mp3/pdst.fm/e/chrt.fm/track/FGADCC/pscrb.fm/rss/p/tracking.swap.fm/track/bwUd3PHC9DH3VTlBXDTt/traffic.megaphone.fm/SBP4198775748.mp3?updated=1748636657', 'type': 'audio/mpeg'}]
-    }]
+    mock_feed.entries = [
+        {
+            'title': 'Complete Episode',
+            'description': 'Full description',
+            'published_parsed': time.strptime('2025-06-08 15:30:00', format_string),
+            'itunes_duration': '01:30:45',
+            'links': [
+                {'href': 'https://example.com/episode1.mp3', 'rel': 'enclosure', 'type': 'audio/mpeg'},
+                {'href': 'https://example.com/episode1', 'rel': 'alternate'}
+            ],
+            'image': {'href': 'https://example.com/ep1.jpg'},
+            'media_thumbnail': [{'url': 'https://example.com/thumb1.jpg'}]
+        },
+        {
+            'title': 'Minimal Episode',
+            'description': None,
+            'published_parsed': time.strptime('2025-03-22 01:02:00', format_string),
+            'links': [{'href': 'https://example.com/episode2.mp3', 'rel': 'enclosure'}]
+        },
+        {
+            'title': 'Duration in Seconds',
+            'description': 'Test description',
+            'published_parsed': time.strptime('2025-05-29 15:00:00', format_string),
+            'itunes_duration': '3600',
+            'links': [{'href': 'https://example.com/episode3.mp3', 'rel': 'enclosure'}],
+            'media_content': [{'duration': '3600'}]
+        },
+        {
+            'title': 'Multiple Artwork Sources',
+            'description': 'Test description',
+            'published_parsed': time.strptime('2025-05-28 10:00:00', format_string),
+            'itunes_duration': '45:30',
+            'links': [{'href': 'https://example.com/episode4.mp3', 'rel': 'enclosure'}],
+            'image': {'href': 'https://example.com/ep4.jpg'},
+            'media_thumbnail': [{'url': 'https://example.com/thumb4.jpg'}],
+            'media_content': [{'url': 'https://example.com/content4.jpg'}]
+        }
+    ]
     return mock_feed
 
 def test_health_check():
@@ -59,10 +90,26 @@ def test_search_podcast_service_error():
         assert response.status_code == 500
         assert "Service error" in response.json()["detail"]
 
-def test_podcast_details_success(monkeypatch):
+def test_podcast_details_with_offset_and_limit_success(monkeypatch):
     mock_feed = create_mock_feed()
     monkeypatch.setattr('feedparser.parse', lambda _: mock_feed)
-    response = client.get("/details?feed_url=https%3A%2F%2Ffeeds.megaphone.fm%2Fgamescoop&max_episodes=1")
+    response = client.get("/details?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&offset=1&limit=1")
     assert response.status_code == 200
-    assert response.json() == load_json_fixture("expected_details_response.json")
+    assert response.json() == load_json_fixture("expected_details_with_offset_and_limit_response.json")
+
+def test_podcast_details_with_no_offset_and_limit_more_than_total_success(monkeypatch):
+    mock_feed = create_mock_feed()
+    monkeypatch.setattr('feedparser.parse', lambda _: mock_feed)
+    response = client.get("/details?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop")
+    assert response.status_code == 200
+    assert response.json() == load_json_fixture("expected_details_with_no_offset_and_limit_more_than_total.json")
+
+def test_podcast_details_error(monkeypatch):
+    def mock_parse(*args):
+        raise Exception("Feed parsing error")
+        
+    monkeypatch.setattr('feedparser.parse', mock_parse)
+    response = client.get("/details/?feed_url=https://example.com/feed.xml")
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Feed parsing error"}
 

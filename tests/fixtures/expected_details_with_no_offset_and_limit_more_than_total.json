@@ -1,0 +1,46 @@
+{
+    "name": "Test Podcast",
+    "description": "Test Description",
+    "imageUrl": "https://example.com/default.jpg",
+    "episodes": [
+      {
+        "name": "Complete Episode",
+        "description": "Full description",
+        "published": "2025-06-08T15:30:00",
+        "downloadUrl": "https://example.com/episode1.mp3",
+        "artworkUrl": "https://example.com/thumb1.jpg",
+        "durationInSeconds": "5445",
+        "type": "audio/mpeg"
+      },
+      {
+        "name": "Minimal Episode",
+        "published": "2025-03-22T01:02:00",
+        "downloadUrl": "https://example.com/episode2.mp3",
+        "artworkUrl": "https://example.com/default.jpg",
+        "type": ""
+      },
+      {
+        "name": "Duration in Seconds",
+        "published": "2025-05-29T15:00:00",
+        "description": "Test description",
+        "downloadUrl": "https://example.com/episode3.mp3",
+        "artworkUrl": "https://example.com/default.jpg",
+        "type": "",
+        "durationInSeconds": "3600"
+      },
+      {
+        "name": "Multiple Artwork Sources",
+        "published": "2025-05-28T10:00:00",
+        "description": "Test description",
+        "downloadUrl": "https://example.com/episode4.mp3",
+        "artworkUrl": "https://example.com/thumb4.jpg",
+        "type": "",
+        "durationInSeconds": "2730"
+      }
+    ],
+    "pagination": {
+        "total": 4,
+        "limit": 10,
+        "offset": 0
+      }
+  }
