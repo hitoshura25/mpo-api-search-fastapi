@@ -15,7 +15,7 @@
         "total": 4,
         "limit": 1,
         "offset": 1,
-        "next_page": "/details/?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&limit=1&offset=2",
-        "previous_page": "/details/?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&limit=1&offset=0"
+        "next_page": "/details/?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&episode_limit=1&episode_offset=2",
+        "previous_page": "/details/?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&episode_limit=1&episode_offset=0"
       }
   }

@@ -93,7 +93,7 @@ async def get_podcast_episodes(feed_url: str, limit: int = 10, offset: int = 0) 
             "total": total_episodes,
             "limit": limit,
             "offset": offset,
-            "next_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={next_offset}" if next_offset != None else None,
-            "previous_page": f"/details/?feed_url={feed_url}&limit={limit}&offset={prev_offset}" if prev_offset != None else None
+            "next_page": f"/details/?feed_url={feed_url}&episode_limit={limit}&episode_offset={next_offset}" if next_offset != None else None,
+            "previous_page": f"/details/?feed_url={feed_url}&episode_limit={limit}&episode_offset={prev_offset}" if prev_offset != None else None
         }
     }
