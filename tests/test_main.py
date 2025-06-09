@@ -93,7 +93,7 @@ def test_search_podcast_service_error():
 def test_podcast_details_with_offset_and_limit_success(monkeypatch):
     mock_feed = create_mock_feed()
     monkeypatch.setattr('feedparser.parse', lambda _: mock_feed)
-    response = client.get("/details?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&offset=1&limit=1")
+    response = client.get("/details?feed_url=https://rss.pdrl.fm/817ebc/feeds.megaphone.fm/gamescoop&episode_offset=1&episode_limit=1")
     assert response.status_code == 200
     assert response.json() == load_json_fixture("expected_details_with_offset_and_limit_response.json")
 
